@@ -31,9 +31,7 @@ def showSummary():
     
     if club:
         return render_template('welcome.html', club=club, competitions=competitions)
-    else:
-        flash('Adresse e-mail invalide. Veuillez entrer une adresse e-mail valide.', 'error')
-        return redirect(url_for('index'))
+    
 
 
 @app.route('/book/<competition>/<club>')
