@@ -26,8 +26,14 @@ def index():
 
 @app.route('/showSummary',methods=['POST'])
 def showSummary():
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html',club=club,competitions=competitions)
+    email = request.form['email']
+    club = next((club for club in clubs if club['email'] == email), None)
+    
+    if club:
+        return render_template('welcome.html', club=club, competitions=competitions)
+    else:
+        flash('Adresse e-mail invalide. Veuillez entrer une adresse e-mail valide.', 'error')
+        return redirect(url_for('index'))
 
 
 @app.route('/book/<competition>/<club>')
@@ -45,6 +51,12 @@ def book(competition,club):
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
+    
+    elif placesRequired == 0 :
+        flash('Désolé, vous pouvez réservez minimum 1 place. ')
+        return render_template('welcome.html', club=club, competitions=competitions)
+    
+    
     placesRequired = int(request.form['places'])
     competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
     flash('Great-booking complete!')
