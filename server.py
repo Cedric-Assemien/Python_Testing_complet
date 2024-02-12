@@ -31,7 +31,9 @@ def showSummary():
     
     if club:
         return render_template('welcome.html', club=club, competitions=competitions)
-    
+    else:
+        flash("Something went wrong-please try again")
+        return render_template('welcome.html', club=club, competitions=competitions)
 
 
 @app.route('/book/<competition>/<club>')
